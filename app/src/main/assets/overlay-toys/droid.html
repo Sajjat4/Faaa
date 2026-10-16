@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Cute Material Droid Avatar</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .avatar-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    filter: drop-shadow(0 6px 14px rgba(0, 229, 255, 0.28));
+  }
+
+  /* Gentle ambient floating & bobbing */
+  .bot-float {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: gentleBob 3.2s ease-in-out infinite;
+    transform-origin: center bottom;
+  }
+
+  @keyframes gentleBob {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-4px) rotate(-1deg); }
+    75% { transform: translateY(2px) rotate(1.2deg); }
+  }
+
+  /* Squash and stretch hop */
+  .hopping {
+    animation: hopAction 0.65s cubic-bezier(0.18, 0.89, 0.32, 1.28) !important;
+  }
+
+  @keyframes hopAction {
+    0% { transform: scale(1, 1) translateY(0); }
+    15% { transform: scale(1.18, 0.82) translateY(5px); }
+    45% { transform: scale(0.88, 1.18) translateY(-14px); }
+    70% { transform: scale(1.08, 0.92) translateY(2px); }
+    85% { transform: scale(0.96, 1.04) translateY(-2px); }
+    100% { transform: scale(1, 1) translateY(0); }
+  }
+
+  svg {
+    width: 72px;
+    height: 72px;
+    overflow: visible;
+  }
+
+  /* Eyes styling */
+  .eye {
+    fill: #00E5FF;
+    filter: drop-shadow(0 0 5px #00E5FF);
+    transition: transform 0.2s ease, fill 0.3s ease;
+    transform-origin: center;
+  }
+
+  /* Eye pupil / iris */
+  .pupil {
+    fill: #ffffff;
+    opacity: 0.95;
+    transition: transform 0.25s ease-out;
+  }
+
+  /* Blinking animation */
+  .blinking .eye {
+    transform: scaleY(0.08) !important;
+  }
+
+  /* State: Listening */
+  .state-listening .eye {
+    fill: #38BDF8;
+    filter: drop-shadow(0 0 9px #38BDF8);
+    transform: scale(1.15);
+  }
+  .state-listening .antenna-tip {
+    fill: #38BDF8 !important;
+    filter: drop-shadow(0 0 7px #38BDF8);
+    animation: antennaPulse 0.8s ease-in-out infinite alternate;
+  }
+
+  /* State: Thinking */
+  .state-thinking .eye {
+    fill: #FBBF24;
+    filter: drop-shadow(0 0 8px #FBBF24);
+  }
+  .state-thinking .pupil {
+    animation: eyeWander 1.2s ease-in-out infinite alternate;
+  }
+
+  /* State: Speaking */
+  .state-speaking .eye {
+    fill: #34D399;
+    filter: drop-shadow(0 0 8px #34D399);
+  }
+  .state-speaking .bot-float {
+    animation: speakingWiggle 0.45s ease-in-out infinite alternate;
+  }
+
+  @keyframes antennaPulse {
+    from { transform: scale(1); opacity: 0.7; }
+    to { transform: scale(1.35); opacity: 1; }
+  }
+
+  @keyframes eyeWander {
+    0% { transform: translate(-2px, 0); }
+    50% { transform: translate(2px, -1px); }
+    100% { transform: translate(-1px, 2px); }
+  }
+
+  @keyframes speakingWiggle {
+    0% { transform: translateY(-2px) scale(1.02, 0.98); }
+    100% { transform: translateY(2px) scale(0.98, 1.02); }
+  }
+</style>
+</head>
+<body>
+
+<div class="avatar-container" id="avatarRoot">
+  <div class="bot-float" id="botFloat">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Material 3 Soft Pastel Gradients -->
+        <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#F0F9FF" />
+          <stop offset="60%" stop-color="#E0F2FE" />
+          <stop offset="100%" stop-color="#BAE6FD" />
+        </linearGradient>
+
+        <linearGradient id="earGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#7DD3FC" />
+          <stop offset="100%" stop-color="#0284C7" />
+        </linearGradient>
+
+        <linearGradient id="visorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#0F172A" />
+          <stop offset="100%" stop-color="#1E293B" />
+        </linearGradient>
+
+        <radialGradient id="blushGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#F43F5E" stop-opacity="0.45" />
+          <stop offset="100%" stop-color="#F43F5E" stop-opacity="0" />
+        </radialGradient>
+      </defs>
+
+      <!-- Antenna stems and glowing tips -->
+      <line x1="50" y1="18" x2="50" y2="8" stroke="#38BDF8" stroke-width="3" stroke-linecap="round" />
+      <circle class="antenna-tip" cx="50" cy="7" r="4.5" fill="#00E5FF" filter="drop-shadow(0 0 4px #00E5FF)" />
+
+      <!-- Left Ear headphone -->
+      <rect x="10" y="38" width="8" height="24" rx="4" fill="url(#earGrad)" />
+      <!-- Right Ear headphone -->
+      <rect x="82" y="38" width="8" height="24" rx="4" fill="url(#earGrad)" />
+
+      <!-- Main Droid Head (Rounded Material Shape) -->
+      <rect x="16" y="18" width="68" height="64" rx="28" fill="url(#bodyGrad)" stroke="#FFFFFF" stroke-width="2.2" />
+
+      <!-- High-Tech Visor Screen -->
+      <rect x="23" y="30" width="54" height="34" rx="15" fill="url(#visorGrad)" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1.2" />
+
+      <!-- Cheerful cute blush dots under eyes -->
+      <circle cx="30" cy="54" r="5" fill="url(#blushGrad)" />
+      <circle cx="70" cy="54" r="5" fill="url(#blushGrad)" />
+
+      <!-- Left Glowing LED Eye -->
+      <g id="leftEyeGroup" transform="translate(37, 46)">
+        <ellipse class="eye" cx="0" cy="0" rx="6.5" ry="7.5" />
+        <circle class="pupil" cx="1.5" cy="-2" r="2.2" />
+      </g>
+
+      <!-- Right Glowing LED Eye -->
+      <g id="rightEyeGroup" transform="translate(63, 46)">
+        <ellipse class="eye" cx="0" cy="0" rx="6.5" ry="7.5" />
+        <circle class="pupil" cx="1.5" cy="-2" r="2.2" />
+      </g>
+
+      <!-- Cute smiling mouth indicator -->
+      <path id="mouth" d="M46 54 Q50 57 54 54" stroke="#00E5FF" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.8" />
+    </svg>
+  </div>
+</div>
+
+<script>
+  const root = document.getElementById('avatarRoot');
+  const botFloat = document.getElementById('botFloat');
+  const leftEyeGroup = document.getElementById('leftEyeGroup');
+  const rightEyeGroup = document.getElementById('rightEyeGroup');
+  const mouth = document.getElementById('mouth');
+
+  let currentState = 'idle';
+
+  // State switching
+  window.setAvatarState = function(state) {
+    currentState = state || 'idle';
+    root.className = 'avatar-container state-' + currentState;
+    if (currentState === 'speaking') {
+      mouth.setAttribute('d', 'M45 53 Q50 60 55 53');
+    } else if (currentState === 'thinking') {
+      mouth.setAttribute('d', 'M46 55 L54 55');
+    } else {
+      mouth.setAttribute('d', 'M46 54 Q50 57 54 54');
+    }
+  };
+
+  // Trigger hop animation
+  window.triggerHop = function() {
+    botFloat.classList.remove('hopping');
+    void botFloat.offsetWidth; // re-flow
+    botFloat.classList.add('hopping');
+    setTimeout(() => {
+      botFloat.classList.remove('hopping');
+    }, 700);
+  };
+
+  // Autonomous Eye Blinking
+  function scheduleBlink() {
+    const delay = 2400 + Math.random() * 3200;
+    setTimeout(() => {
+      root.classList.add('blinking');
+      setTimeout(() => {
+        root.classList.remove('blinking');
+        // Double blink occasionally
+        if (Math.random() < 0.28) {
+          setTimeout(() => {
+            root.classList.add('blinking');
+            setTimeout(() => root.classList.remove('blinking'), 140);
+          }, 180);
+        }
+        scheduleBlink();
+      }, 160);
+    }, delay);
+  }
+  scheduleBlink();
+
+  // Natural Gaze Shifts
+  function scheduleGazeShift() {
+    const delay = 1800 + Math.random() * 2600;
+    setTimeout(() => {
+      if (currentState === 'idle') {
+        const dx = (Math.random() - 0.5) * 4.5;
+        const dy = (Math.random() - 0.5) * 3;
+        leftEyeGroup.setAttribute('transform', `translate(${37 + dx}, ${46 + dy})`);
+        rightEyeGroup.setAttribute('transform', `translate(${63 + dx}, ${46 + dy})`);
+      }
+      scheduleGazeShift();
+    }, delay);
+  }
+  scheduleGazeShift();
+
+  // Tap triggers playful hop
+  root.addEventListener('click', () => {
+    window.triggerHop();
+  });
+</script>
+</body>
+</html>

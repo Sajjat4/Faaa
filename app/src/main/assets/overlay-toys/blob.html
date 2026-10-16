@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Cute Material Blob Avatar</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .avatar-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    filter: drop-shadow(0 6px 14px rgba(236, 72, 153, 0.28));
+  }
+
+  .blob-float {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: jellyIdle 3.4s ease-in-out infinite;
+    transform-origin: center bottom;
+  }
+
+  @keyframes jellyIdle {
+    0%, 100% { transform: translateY(0px) scale(1, 1); }
+    25% { transform: translateY(-4px) scale(0.97, 1.03); }
+    50% { transform: translateY(1px) scale(1.03, 0.97); }
+    75% { transform: translateY(-2px) scale(0.98, 1.02); }
+  }
+
+  /* Squash & stretch hop */
+  .hopping {
+    animation: blobHop 0.7s cubic-bezier(0.18, 0.89, 0.32, 1.35) !important;
+  }
+
+  @keyframes blobHop {
+    0% { transform: scale(1, 1) translateY(0); }
+    18% { transform: scale(1.28, 0.72) translateY(6px); }
+    48% { transform: scale(0.82, 1.25) translateY(-16px); }
+    72% { transform: scale(1.12, 0.88) translateY(3px); }
+    88% { transform: scale(0.95, 1.05) translateY(-2px); }
+    100% { transform: scale(1, 1) translateY(0); }
+  }
+
+  svg {
+    width: 74px;
+    height: 74px;
+    overflow: visible;
+  }
+
+  .eye {
+    fill: #1E293B;
+    transition: transform 0.2s ease;
+    transform-origin: center;
+  }
+
+  .pupil-sparkle {
+    fill: #FFFFFF;
+  }
+
+  .blinking .eye {
+    transform: scaleY(0.08) !important;
+  }
+
+  /* State: Listening */
+  .state-listening .blob-body {
+    filter: drop-shadow(0 0 10px #F472B6);
+  }
+  .state-listening .eye {
+    transform: scale(1.2);
+  }
+
+  /* State: Thinking */
+  .state-thinking .blob-float {
+    animation: thinkingWobble 0.9s ease-in-out infinite alternate;
+  }
+
+  @keyframes thinkingWobble {
+    0% { transform: rotate(-5deg) scale(0.98, 1.02); }
+    100% { transform: rotate(5deg) scale(1.02, 0.98); }
+  }
+
+  /* State: Speaking */
+  .state-speaking .mouth {
+    d: path("M36 53 Q40 62 44 53") !important;
+  }
+</style>
+</head>
+<body>
+
+<div class="avatar-container" id="avatarRoot">
+  <div class="blob-float" id="blobFloat">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Soft Pastel Jelly Gradients (Material 3 Rose & Peach) -->
+        <linearGradient id="blobGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FED7AA" />
+          <stop offset="40%" stop-color="#FBCFE8" />
+          <stop offset="100%" stop-color="#F472B6" />
+        </linearGradient>
+
+        <linearGradient id="highlightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.8" />
+          <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+        </linearGradient>
+
+        <radialGradient id="cheekGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#FB7185" stop-opacity="0.6" />
+          <stop offset="100%" stop-color="#FB7185" stop-opacity="0" />
+        </radialGradient>
+      </defs>
+
+      <!-- Soft Jelly Blob Body -->
+      <path class="blob-body" d="M50 14 C76 14 86 34 86 56 C86 78 72 86 50 86 C28 86 14 78 14 56 C14 34 24 14 50 14 Z"
+            fill="url(#blobGrad)" stroke="#FFFFFF" stroke-width="2.5" />
+
+      <!-- Glossy Jelly Top Highlight -->
+      <ellipse cx="44" cy="25" rx="18" ry="7" fill="url(#highlightGrad)" transform="rotate(-15, 44, 25)" />
+
+      <!-- Sweet Rosy Cheeks -->
+      <circle cx="27" cy="54" r="6" fill="url(#cheekGrad)" />
+      <circle cx="73" cy="54" r="6" fill="url(#cheekGrad)" />
+
+      <!-- Left Cute Eye -->
+      <g id="leftEye" transform="translate(35, 46)">
+        <ellipse class="eye" cx="0" cy="0" rx="4.8" ry="6.2" />
+        <circle class="pupil-sparkle" cx="1.2" cy="-1.8" r="1.8" />
+        <circle class="pupil-sparkle" cx="-1.2" cy="1.8" r="0.9" />
+      </g>
+
+      <!-- Right Cute Eye -->
+      <g id="rightEye" transform="translate(65, 46)">
+        <ellipse class="eye" cx="0" cy="0" rx="4.8" ry="6.2" />
+        <circle class="pupil-sparkle" cx="1.2" cy="-1.8" r="1.8" />
+        <circle class="pupil-sparkle" cx="-1.2" cy="1.8" r="0.9" />
+      </g>
+
+      <!-- Sweet Smiling Mouth -->
+      <path id="mouth" class="mouth" d="M46 54 Q50 58 54 54" stroke="#1E293B" stroke-width="2.2" stroke-linecap="round" fill="none" />
+    </svg>
+  </div>
+</div>
+
+<script>
+  const root = document.getElementById('avatarRoot');
+  const blobFloat = document.getElementById('blobFloat');
+  const leftEye = document.getElementById('leftEye');
+  const rightEye = document.getElementById('rightEye');
+  const mouth = document.getElementById('mouth');
+
+  let currentState = 'idle';
+
+  window.setAvatarState = function(state) {
+    currentState = state || 'idle';
+    root.className = 'avatar-container state-' + currentState;
+    if (currentState === 'speaking') {
+      mouth.setAttribute('d', 'M45 52 Q50 60 55 52');
+    } else if (currentState === 'thinking') {
+      mouth.setAttribute('d', 'M46 54 L54 54');
+    } else {
+      mouth.setAttribute('d', 'M46 54 Q50 58 54 54');
+    }
+  };
+
+  window.triggerHop = function() {
+    blobFloat.classList.remove('hopping');
+    void blobFloat.offsetWidth;
+    blobFloat.classList.add('hopping');
+    setTimeout(() => blobFloat.classList.remove('hopping'), 700);
+  };
+
+  function scheduleBlink() {
+    const delay = 2200 + Math.random() * 3000;
+    setTimeout(() => {
+      root.classList.add('blinking');
+      setTimeout(() => {
+        root.classList.remove('blinking');
+        if (Math.random() < 0.25) {
+          setTimeout(() => {
+            root.classList.add('blinking');
+            setTimeout(() => root.classList.remove('blinking'), 130);
+          }, 160);
+        }
+        scheduleBlink();
+      }, 150);
+    }, delay);
+  }
+  scheduleBlink();
+
+  function scheduleGazeShift() {
+    const delay = 1800 + Math.random() * 2400;
+    setTimeout(() => {
+      if (currentState === 'idle') {
+        const dx = (Math.random() - 0.5) * 4;
+        const dy = (Math.random() - 0.5) * 2.8;
+        leftEye.setAttribute('transform', `translate(${35 + dx}, ${46 + dy})`);
+        rightEye.setAttribute('transform', `translate(${65 + dx}, ${46 + dy})`);
+      }
+      scheduleGazeShift();
+    }, delay);
+  }
+  scheduleGazeShift();
+
+  root.addEventListener('click', () => {
+    window.triggerHop();
+  });
+</script>
+</body>
+</html>

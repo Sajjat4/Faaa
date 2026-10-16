@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Remix Jarvis77",
+  "description": "Imported from GitHub: Sajjat4/Jarvis77",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
